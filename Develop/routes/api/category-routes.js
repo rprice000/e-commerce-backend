@@ -10,7 +10,29 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // find one category by its `id` value
+  Category.findOne({
+    where: {
+      id: req.params.id
+    },
   // be sure to include its associated Products
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      }
+    ]
+  })
+    .then(dbCategoryModel => {
+      if (!dbCategoryModel) {
+        res.status(404).json({ message: 'No Category With That Id'}); 
+        return; 
+      }
+      res.json(dbCategoryModel);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.post('/', (req, res) => {
