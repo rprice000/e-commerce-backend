@@ -37,7 +37,7 @@ router.get('/:id', (req, res) => {
   })
     .then(dbTagModel => {
       if (!dbTagModel) {
-        res.status(404).json({ message: 'No tag found with this id'});
+        res.status(404).json({ message: 'No Tag With That Id.'});
         return;
       }
       res.json(dbTagModel);
@@ -62,6 +62,22 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update(req.body, {
+    where: {
+        id: req.params.id
+    }
+  })
+    .then(dbTagModel => {
+        if (!dbTagModel[0]) {
+            res.status(404).json({ message: 'No Tag With That Id.'});
+            return;
+        }
+        res.json(dbTagModel);
+  })
+    .catch(err => {
+        console.log(err); 
+        res.status(500).json(err);
+  });
 });
 
 router.delete('/:id', (req, res) => {
