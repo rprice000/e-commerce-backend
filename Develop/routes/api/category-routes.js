@@ -28,12 +28,12 @@ router.delete('/:id', (req, res) => {
         id: req.params.id
     }
   })
-    .then(categoryModel => {
-        if (!categoryModel) {
+    .then(dbCategoryModel => {
+        if (!dbCategoryModel) {
             res.status(404).json({ message: 'No Category With That Id'});
             return;
         }
-        res.json(categoryModel);
+        res.json(dbCategoryModel);
   })
     .catch(err => {
         console.log(err);
